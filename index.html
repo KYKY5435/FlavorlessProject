@@ -1,0 +1,57 @@
+<html>
+
+  <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <title>KYKY5435's Website</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
+        <script src="https://kyky5435.github.io/basis.js"></script>
+        <script src="https://kyky5435.github.io//image_slideshow.js"></script>
+    </head>
+  <body>
+  <h1><i>KYKY5435</i></h1>
+  <model-viewer id="minecraft-model"
+            src="https://kyky5435.github.io/MC/Skin/model.gltf" 
+            alt="A 3D interactive model" 
+            ar 
+            camera-controls 
+            auto-rotate 
+            interaction-prompt="none"
+            shadow-intensity="1">
+        </model-viewer>
+
+    <script>
+            const minecraftModel = document.querySelector('#minecraft-model');
+            minecraftModel.addEventListener('load', async () => {
+                console.log('Available animations:', minecraftModel.availableAnimations);
+                minecraftModel.appendAnimation("board");
+                minecraftModel.appendAnimation("tilt");
+                //time based skins
+                const today = new Date();
+                const month = today.getMonth(); // 0 = January, 11 = December
+                const date = today.getDate();
+                let defaultTexture = "MC/Skin/skin.png";
+    
+                if (month == 9) {
+                    defaultTexture = "MC/Skin/halloween.png"; // October 31st
+                } 
+                if (month == 11) {
+                    defaultTexture = "MC/Skin/christmas.png";
+                }
+                const material0 = minecraftModel.model.materials[0]; 
+                const material1 = minecraftModel.model.materials[1]; 
+                const newTexture = await minecraftModel.createTexture(defaultTexture);
+
+                newTexture.sampler.setMagFilter(9728);
+                newTexture.sampler.setMinFilter(9728);
+
+                newTexture.sampler.setWrapS(33071)
+                newTexture.sampler.setWrapT(33071)
+
+                material0.pbrMetallicRoughness.baseColorTexture.setTexture(newTexture);
+                material1.pbrMetallicRoughness.baseColorTexture.setTexture(newTexture);
+            });
+        </script>
+  </body>
+</html>
